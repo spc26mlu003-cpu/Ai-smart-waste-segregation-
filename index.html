@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AI Smart Waste Segregation</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f0f7f2;
+    color: #222;
+}
+
+header {
+    background: #087f45;
+    color: white;
+    padding: 25px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 30px;
+}
+
+header p {
+    margin-top: 10px;
+}
+
+.container {
+    max-width: 850px;
+    margin: 35px auto;
+    padding: 25px;
+}
+
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px #0001;
+    text-align: center;
+}
+
+.card h2 {
+    color: #087f45;
+    margin-bottom: 20px;
+}
+
+.upload-box {
+    border: 2px dashed #087f45;
+    padding: 30px;
+    border-radius: 12px;
+    margin: 20px 0;
+}
+
+input {
+    margin: 15px;
+}
+
+button {
+    background: #087f45;
+    color: white;
+    border: none;
+    padding: 13px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background: #056435;
+}
+
+#preview {
+    max-width: 250px;
+    max-height: 250px;
+    display: none;
+    margin: 20px auto;
+    border-radius: 10px;
+}
+
+.result {
+    margin-top: 25px;
+    padding: 20px;
+    background: #e6f5eb;
+    border-radius: 10px;
+    display: none;
+}
+
+.result h3 {
+    color: #087f45;
+    margin-bottom: 10px;
+}
+
+.categories {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.category {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 3px 10px #0001;
+}
+
+.category span {
+    font-size: 30px;
+}
+
+footer {
+    background: #087f45;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    margin-top: 40px;
+}
+
+@media(max-width:600px) {
+    .categories {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>♻️ AI SMART WASTE SEGREGATION</h1>
+    <p>Smart Technology for a Cleaner Environment</p>
+</header>
+
+<div class="container">
+
+    <div class="card">
+
+        <h2>Waste Classification System</h2>
+
+        <p>Upload an image of waste to classify it.</p>
+
+        <div class="upload-box">
+
+            <input type="file"
+                   id="imageInput"
+                   accept="image/*"
+                   onchange="previewImage()">
+
+            <img id="preview">
+
+            <br>
+
+            <label>Select waste category for demo:</label>
+            <br>
+
+            <select id="category">
+                <option value="plastic">Plastic</option>
+                <option value="paper">Paper</option>
+                <option value="metal">Metal</option>
+                <option value="glass">Glass</option>
+                <option value="organic">Organic</option>
+                <option value="cardboard">Cardboard</option>
+            </select>
+
+            <br><br>
+
+            <button onclick="classifyWaste()">
+                Analyze Waste
+            </button>
+
+        </div>
+
+        <div class="result" id="result">
+            <h3>Classification Result</h3>
+            <p id="wasteName"></p>
+            <p id="binName"></p>
+            <p id="suggestion"></p>
+            <p><b>Mode:</b> Demonstration (manual category selection)</p>
+        </div>
+
+    </div>
+
+    <h2 style="text-align:center; margin-top:35px;">
+        Waste Categories
+    </h2>
+
+    <div class="categories">
+
+        <div class="category">
+            <span>🥤</span>
+            <h3>Plastic</h3>
+        </div>
+
+        <div class="category">
+            <span>📄</span>
+            <h3>Paper</h3>
+        </div>
+
+        <div class="category">
+            <span>🥫</span>
+            <h3>Metal</h3>
+        </div>
+
+        <div class="category">
+            <span>🍾</span>
+            <h3>Glass</h3>
+        </div>
+
+        <div class="category">
+            <span>🍃</span>
+            <h3>Organic</h3>
+        </div>
+
+        <div class="category">
+            <span>📦</span>
+            <h3>Cardboard</h3>
+        </div>
+
+    </div>
+
+</div>
+
+<footer>
+    <p>AI Smart Waste Segregation Project</p>
+    <p>B.Tech Artificial Intelligence & Machine Learning</p>
+</footer>
+
+<script>
+
+function previewImage() {
+
+    const file = document.getElementById("imageInput").files[0];
+
+    if (file) {
+        const preview = document.getElementById("preview");
+
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = "block";
+    }
+}
+
+function classifyWaste() {
+
+    const file = document.getElementById("imageInput").files[0];
+
+    if (!file) {
+        alert("Please upload a waste image!");
+        return;
+    }
+
+    const category = document.getElementById("category").value;
+
+    const data = {
+        plastic: ["Plastic", "Plastic Recycling Bin",
+                  "Clean and recycle plastic containers."],
+
+        paper: ["Paper", "Paper Recycling Bin",
+                "Keep paper clean and dry."],
+
+        metal: ["Metal", "Metal Recycling Bin",
+                "Recycle metal cans and containers."],
+
+        glass: ["Glass", "Glass Recycling Bin",
+                "Separate glass for recycling."],
+
+        organic: ["Organic", "Compost Bin",
+                  "Organic waste can be composted."],
+
+        cardboard: ["Cardboard", "Paper Recycling Bin",
+                    "Flatten cardboard before recycling."]
+    };
+
+    document.getElementById("wasteName").innerHTML =
+        "Waste Type: " + data[category][0];
+
+    document.getElementById("binName").innerHTML =
+        "Suggested Bin: " + data[category][1];
+
+    document.getElementById("suggestion").innerHTML =
+        "Suggestion: " + data[category][2];
+
+    document.getElementById("result").style.display = "block";
+}
+
+</script>
+
+</body>
+</html>
